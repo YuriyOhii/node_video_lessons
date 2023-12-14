@@ -11,7 +11,7 @@ export async function list() {
   return JSON.parse(movies);
 }
 
-export async function put(id, ...data) {
+export async function put(movieId, ...data) {
   const movies = await list();
   const idx = movies.findIndex(({ id }) => id === movieId);
   if (idx === -1) {
@@ -22,13 +22,13 @@ export async function put(id, ...data) {
 }
 
 export async function get(movieId) {
-  const movies = await listMovies();
+  const movies = await list();
   const movie = movies.find(({ id }) => movieId === id);
   return movie || null;
 }
 
 export async function remove(movieId) {
-  const movies = await listMovies();
+  const movies = await list();
   const idx = movies.findIndex(({ id }) => id === movieId);
   if (idx === -1) {
     return null;
@@ -39,7 +39,7 @@ export async function remove(movieId) {
 }
 
 export async function add(data) {
-  const movies = await listMovies();
+  const movies = await list();
   const newMovie = { id: nanoid(), ...data };
   movies.push(newMovie);
   updateMovies(movies);

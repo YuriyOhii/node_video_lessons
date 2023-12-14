@@ -8,7 +8,7 @@ app.use(cors());
 app.use("/api/movies", moviesRouter);
 
 app.use((req, res) => {
-  res.json({
+  res.status(404).json({
     message: "Not found",
   });
 });
