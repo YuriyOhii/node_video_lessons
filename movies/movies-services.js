@@ -11,16 +11,6 @@ export async function list() {
   return JSON.parse(movies);
 }
 
-export async function put(movieId, ...data) {
-  const movies = await list();
-  const idx = movies.findIndex(({ id }) => id === movieId);
-  if (idx === -1) {
-    return null;
-  }
-  const updatedMovie = { ...movies[idx], ...data };
-  return updatedMovie;
-}
-
 export async function get(movieId) {
   const movies = await list();
   const movie = movies.find(({ id }) => movieId === id);
@@ -44,4 +34,14 @@ export async function add(data) {
   movies.push(newMovie);
   updateMovies(movies);
   return newMovie;
+}
+
+export async function put(movieId, ...data) {
+  const movies = await list();
+  const idx = movies.findIndex(({ id }) => id === movieId);
+  if (idx === -1) {
+    return null;
+  }
+  const updatedMovie = { ...movies[idx], ...data };
+  return updatedMovie;
 }

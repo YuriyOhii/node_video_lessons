@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import moviesRouter from "./movies/api/movies-router.js";
+import moviesRouter from "./routes_api/movies-routes.js";
 
 const app = express();
 
@@ -14,5 +14,5 @@ app.use((req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("Server is running");
+  console.log("Server is running on PORT 3000");
 });
