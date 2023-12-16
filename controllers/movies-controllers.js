@@ -24,8 +24,9 @@ export const getById = async (req, res, next) => {
 };
 
 export const post = async (req, res, next) => {
-  // res.json(movies[0]);
-  console.log("post movie");
+  const { data } = req.params;
+
+  const result = await moviesServices.add(data);
 };
 
 export const putById = async (req, res) => {
