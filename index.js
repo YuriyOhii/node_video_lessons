@@ -5,6 +5,8 @@ import moviesRouter from "./routes_api/movies-routes.js";
 const app = express();
 
 app.use(cors());
+app.use(express.json());
+
 app.use("/api/movies", moviesRouter);
 
 app.use((req, res) => {

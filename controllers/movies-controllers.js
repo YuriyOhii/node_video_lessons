@@ -1,5 +1,11 @@
 import * as moviesServices from "../movies/movies-services.js";
+import Joi from "joi";
 import { HttpError } from "../helpers/index.js";
+
+const moviesAddSchema = Joi.object({
+  title: Joi.string().required(),
+  director: Joi.string().required(),
+});
 
 export const getAll = async (req, res, next) => {
   try {
@@ -24,9 +30,16 @@ export const getById = async (req, res, next) => {
 };
 
 export const post = async (req, res, next) => {
-  const { data } = req.params;
-
-  const result = await moviesServices.add(data);
+  try {
+    const { error } = moviesAddSchema.validate(req.body);
+    if (error) {
+      throw HttpError(400, error.message);
+    }
+    const result = await moviesServices.add(req.body);
+    res.status(201).json(result);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const putById = async (req, res) => {
