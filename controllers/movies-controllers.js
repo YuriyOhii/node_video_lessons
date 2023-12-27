@@ -44,13 +44,19 @@ export const putById = async (req, res, next) => {
     const { id } = req.params;
     const result = await moviesServices.put(id, req.body);
     if (!result) throw HttpError(404, `Movie with id ${id} is not found`);
-    res.status(200).json(result);
+    res.json(result);
   } catch (error) {
     next(error);
   }
 };
 
-export const deleteById = async (req, res) => {
-  // res.json(movies[0]);
-  console.log("delete movie");
+export const deleteById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const result = await moviesServices.remove(id);
+    if (!result) throw HttpError(404, `Movie with id ${id} is not found`);
+    res.json({ message: "Movie deleted succesfully" });
+  } catch (error) {
+    next(error);
+  }
 };
