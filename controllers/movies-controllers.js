@@ -1,11 +1,6 @@
 import * as moviesServices from "../movies/movies-services.js";
-import Joi from "joi";
 import { HttpError } from "../helpers/index.js";
-
-const moviesAddSchema = Joi.object({
-  title: Joi.string().required(),
-  director: Joi.string().required(),
-});
+import { moviesAddSchema, moviesPutSchema } from "../schemas/index.js";
 
 export const getAll = async (req, res, next) => {
   try {
@@ -42,9 +37,17 @@ export const post = async (req, res, next) => {
   }
 };
 
-export const putById = async (req, res) => {
-  // res.json(movies[0]);
-  console.log("put movie");
+export const putById = async (req, res, next) => {
+  try {
+    const { error } = moviesPutSchema.validate(req.body);
+    if (error) throw HttpError(400, error.message);
+    const { id } = req.params;
+    const result = await moviesServices.put(id, req.body);
+    if (!result) throw HttpError(404, `Movie with id ${id} is not found`);
+    res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
 };
 
 export const deleteById = async (req, res) => {

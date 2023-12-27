@@ -36,12 +36,13 @@ export async function add(data) {
   return newMovie;
 }
 
-export async function put(movieId, ...data) {
+export async function put(movieId, data) {
   const movies = await list();
   const idx = movies.findIndex(({ id }) => id === movieId);
   if (idx === -1) {
     return null;
   }
-  const updatedMovie = { ...movies[idx], ...data };
-  return updatedMovie;
+  movies[idx] = { ...movies[idx], ...data };
+  updateMovies(movies);
+  return movies[idx];
 }
