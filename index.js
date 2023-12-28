@@ -23,3 +23,17 @@ app.use((err, req, res, next) => {
 app.listen(3000, () => {
   console.log("Server is running on PORT 3000");
 });
+// console.log("hello");
+
+// const sum = (a, b) => a + b;
+
+// const isInteger =
+//   (func) =>
+//   (...args) => {
+//     if (args.some((el) => !Number.isInteger(el)))
+//       throw new Error("Not integer");
+//     return func(...args);
+//   };
+
+//   const wrapper = isInteger(sum);
+//   console.log(wrapper(2,1))
