@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 import app from "./app.js";
 // double 2
 
-const {DB_HOST, PORT}= process.env;
+const { DB_HOST, PORT } = process.env;
 mongoose
   .connect(DB_HOST)
   .then(() =>
