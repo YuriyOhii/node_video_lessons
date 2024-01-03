@@ -3,6 +3,7 @@
 // new user password TfhA1URORHQpiQbW;
 import mongoose from "mongoose";
 import app from "./app.js";
+// double 2
 
 const DB_HOST =
   "mongodb+srv://uaogiy:uEXvUieoQhFXVwDa@cluster0.cuxjisd.mongodb.net/sample_movies?retryWrites=true&w=majority";
