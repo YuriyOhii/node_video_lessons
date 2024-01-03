@@ -2,9 +2,10 @@ import * as moviesServices from "../movies/movies-services.js";
 import { HttpError } from "../helpers/index.js";
 import { moviesAddSchema, moviesPutSchema } from "../schemas/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
+import Movie from "../models/Movie.js";
 
 const getAll = async (req, res, next) => {
-  const result = await moviesServices.list();
+  const result = await Movie.find();
   res.json(result);
 };
 
