@@ -1,12 +1,16 @@
 import express from "express";
 const moviesRouter = express.Router();
 import moviesControllers from "../controllers/movies-controllers.js";
-import { isBodyEmpty } from "../middlewars/index.js";
-import { moviesAddSchema, moviesPutSchema } from "../schemas/index.js";
+import { isBodyEmpty, isTrueId } from "../middlewars/index.js";
+import {
+  moviesAddSchema,
+  moviesPutSchema,
+  moviesPatchSchema,
+} from "../models/Movie.js";
 import { schemaValidation } from "../decorators/index.js";
 
 moviesRouter.get("/", moviesControllers.getAll);
-moviesRouter.get("/:id", moviesControllers.getById);
+moviesRouter.get("/:id", isTrueId, moviesControllers.getById);
 moviesRouter.post(
   "/",
   isBodyEmpty,
@@ -16,8 +20,16 @@ moviesRouter.post(
 moviesRouter.put(
   "/:id",
   isBodyEmpty,
+  isTrueId,
   schemaValidation(moviesPutSchema),
   moviesControllers.putById
 );
-moviesRouter.delete("/:id", moviesControllers.deleteById);
+moviesRouter.patch(
+  "/:id/favourite",
+  isBodyEmpty,
+  isTrueId,
+  schemaValidation(moviesPatchSchema),
+  moviesControllers.putById
+);
+moviesRouter.delete("/:id", isTrueId, moviesControllers.deleteById);
 export default moviesRouter;
