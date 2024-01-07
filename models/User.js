@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
-// import {updateParameters, handleForStatus400} from './hooks.js';
+import { updateParameters, handleForStatus400 } from "./hooks.js";
 
 const emailRegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -14,17 +14,18 @@ const userSchema = new Schema(
       type: String,
       required: true,
       match: emailRegExp,
+      unique: true,
     },
     password: {
       type: String,
       required: true,
-      lengthmin: 6,
+      minlength: 6,
     },
   },
   { versionKey: false, timestamps: true }
 );
 
-// userSchema.post('save', handleForStatus400);
+userSchema.post("save", handleForStatus400);
 
 const signUpSchema = Joi.object({
   username: Joi.string().required(),
