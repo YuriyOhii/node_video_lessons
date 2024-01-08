@@ -3,6 +3,7 @@ import cors from "cors";
 import moviesRouter from "./routes_api/movies-routes.js";
 import authRouter from "./routes_api/auth-routes.js";
 import dotenv from "dotenv";
+import { authenticate } from "./middlewars/index.js";
 dotenv.config();
 
 const app = express();
@@ -10,7 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/api/movies", moviesRouter);
+app.use("/api/movies", authenticate, moviesRouter);
 app.use("/api/auth", authRouter);
 
 app.use((req, res) => {

@@ -1,14 +1,13 @@
 import express from "express";
 const moviesRouter = express.Router();
 import moviesControllers from "../controllers/movies-controllers.js";
-import { isBodyEmpty, isTrueId } from "../middlewars/index.js";
+import { isBodyEmpty, isTrueId, authenticate } from "../middlewars/index.js";
 import {
   moviesAddSchema,
   moviesPutSchema,
   moviesPatchSchema,
 } from "../models/Movie.js";
 import { schemaValidation } from "../decorators/index.js";
-
 moviesRouter.get("/", moviesControllers.getAll);
 moviesRouter.get("/:id", isTrueId, moviesControllers.getById);
 moviesRouter.post(
