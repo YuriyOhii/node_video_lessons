@@ -3,6 +3,8 @@ import authControllers from "../controllers/auth-controllers.js";
 import { isBodyEmpty } from "../middlewars/index.js";
 import { schemaValidation } from "../decorators/index.js";
 import { signInSchema, signUpSchema } from "../models/User.js";
+import { authenticate } from "../middlewars/index.js";
+
 const authRouter = express.Router();
 
 authRouter.post(
@@ -18,5 +20,14 @@ authRouter.post(
   schemaValidation(signInSchema),
   authControllers.signIn
 );
+
+authRouter.get(
+  "/current",
+  isBodyEmpty,
+  authenticate,
+  authControllers.getCurrent
+);
+
+authRouter.post("/signOut", isBodyEmpty, authenticate, authControllers.signOut);
 
 export default authRouter;
