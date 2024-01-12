@@ -1,7 +1,7 @@
 import express from "express";
 const moviesRouter = express.Router();
 import moviesControllers from "../controllers/movies-controllers.js";
-import { isBodyEmpty, isTrueId, authenticate } from "../middlewars/index.js";
+import { isBodyEmpty, isTrueId, upload } from "../middlewars/index.js";
 import {
   moviesAddSchema,
   moviesPutSchema,
@@ -12,12 +12,14 @@ moviesRouter.get("/", moviesControllers.getAll);
 moviesRouter.get("/:id", isTrueId, moviesControllers.getById);
 moviesRouter.post(
   "/",
+  upload.single("poster"),
   isBodyEmpty,
   schemaValidation(moviesAddSchema),
   moviesControllers.post
 );
-moviesRouter.put(
+moviesRouter.put(   
   "/:id",
+  upload.single("poster"), 
   isBodyEmpty,
   isTrueId,
   schemaValidation(moviesPutSchema),
