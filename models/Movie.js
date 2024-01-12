@@ -34,6 +34,9 @@ const schema = new Schema(
       ref: "user",
       required: true,
     },
+    poster: {
+      type: String,
+    },
   },
   { versionKey: false, timestamps: true }
 );

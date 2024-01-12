@@ -1,6 +1,11 @@
+import fs from "fs/promises";
+import path from "path";
+
 import { HttpError } from "../helpers/index.js";
 import { ctrlWrapper } from "../decorators/index.js";
 import { Movie, moviesAddSchema, moviesPutSchema } from "../models/Movie.js";
+
+const posterPath = path.resolve("public", "poster");
 
 const getAll = async (req, res, next) => {
   const { page = 1, limit = 10 } = req.query;
@@ -24,8 +29,14 @@ const getById = async (req, res, next) => {
 };
 
 const post = async (req, res, next) => {
+  const { path: oldPath, filename } = req.file;
+  const newPath = path.join(posterPath, filename);
+  const poster = path.join("poster", filename);
+
+  await fs.rename(oldPath, newPath);
+
   const owner = req.user.id;
-  const result = await Movie.create({ ...req.body, owner });
+  const result = await Movie.create({ ...req.body, owner, poster });
   res.status(201).json(result);
 };
 

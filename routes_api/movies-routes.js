@@ -17,9 +17,9 @@ moviesRouter.post(
   schemaValidation(moviesAddSchema),
   moviesControllers.post
 );
-moviesRouter.put(   
+moviesRouter.put(
   "/:id",
-  upload.single("poster"), 
+  upload.single("poster"),
   isBodyEmpty,
   isTrueId,
   schemaValidation(moviesPutSchema),
