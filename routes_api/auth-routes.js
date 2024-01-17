@@ -30,4 +30,6 @@ authRouter.get(
 
 authRouter.post("/signOut", isBodyEmpty, authenticate, authControllers.signOut);
 
+authRouter.get("/verify/:verificationCode", authControllers.verifyEmail);
+
 export default authRouter;

@@ -1,11 +1,12 @@
 import bcrypt from "bcrypt";
+import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.js";
 import { ctrlWrapper } from "../decorators/index.js";
-import HttpError from "../helpers/HttpError.js";
+import { HttpError, sendEmail } from "../helpers/index.js";
 import "dotenv/config";
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET, BASE_ADDRESS } = process.env;
 
 const signUp = async (req, res) => {
   const { email, password } = req.body;
@@ -14,7 +15,19 @@ const signUp = async (req, res) => {
     throw HttpError(409, "Such email already exist!");
   }
   const hashedPassword = await bcrypt.hash(password, 10);
-  const result = await User.create({ ...req.body, password: hashedPassword });
+  const verificationCode = nanoid();
+  const result = await User.create({
+    ...req.body,
+    password: hashedPassword,
+    verificationCode,
+  });
+
+  const data = {
+    to: email,
+    subject: "Verification email.",
+    html: `<a target="_blank" href="${BASE_ADDRESS}/api/auth/verify/${verificationCode}"> Click to verify your email</a>`,
+  };
+  sendEmail(data);
   res.status(201).json({ username: result.username, email: result.email });
 };
 
@@ -44,9 +57,28 @@ const signOut = async (req, res) => {
   res.json({ message: "signOut success" });
 };
 
+const verifyEmail = async (req, res) => {
+  const { verificationCode } = req.params;
+  const user = await User.findOne({ verificationCode });
+  if (!user) {
+    throw HttpError(400, "No email to verify");
+  }
+
+  if (user.verificationCode === "" && user.verify === true) {
+    throw HttpError(400, "Email is already verified");
+  }
+
+  await User.findOneAndUpdate(
+    { verificationCode },
+    { verificationCode: "", verify: true }
+  );
+  res.json({ message: "verification is success" });
+};
+
 export default {
   signIn: ctrlWrapper(signIn),
   signUp: ctrlWrapper(signUp),
   getCurrent: ctrlWrapper(getCurrent),
   signOut: ctrlWrapper(signOut),
+  verifyEmail: ctrlWrapper(verifyEmail),
 };

@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
-import { updateParameters, handleForStatus400 } from "./hooks.js";
+import { handleForStatus400 } from "./hooks.js";
 
 const emailRegExp = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
 
@@ -24,6 +24,11 @@ const userSchema = new Schema(
     token: {
       type: String,
     },
+    verify: {
+      type: Boolean,
+      default: false,
+    },
+    verificationCode: String,
   },
   { versionKey: false, timestamps: true }
 );
